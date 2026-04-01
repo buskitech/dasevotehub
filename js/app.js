@@ -1,30 +1,9 @@
-/**
- * ============================================
- * VoteHub — Main Application Entry Point
- * VIBECODE SAFELY PRINCIPLES APPLIED:
- *   ✅ Tasks broken into phases — Firebase init, auth, listen, render
- *   ✅ Never break existing features — demo mode fallback preserved
- *   ✅ No keys hardcoded — config.js holds config, .env would hold secrets
- *   ✅ Input validation — WEBSITE_IDEAS sanitized before any DOM output
- *   ✅ Backup strategy — demo mode = always-working safe state
- *   ✅ Rate limiting — localStorage blocks repeated votes per device too
- *   ✅ Error messages generic — no internal details exposed to users
- * ============================================
- */
+
 
 (function () {
     'use strict';
 
-    // ═══════════════════════════════════════════
-    // WEBSITE IDEAS — Edit These!
-    // Add your own ideas here. Each needs:
-    //   id:          URL-safe string (letters, numbers, hyphens only)
-    //   title:       Name of the website (max 100 chars)
-    //   description: What the site does (max 500 chars)
-    //   votes:       Always start at 0
-    //
-    // VIBECODE SAFELY: IDs use only alphanumeric + hyphens.
-    // This prevents any injection via ID in DOM attributes or Firestore paths.
+ 
     // ═══════════════════════════════════════════
     var WEBSITE_IDEAS = [
         {
@@ -87,9 +66,7 @@
     var RATE_LIMIT_MS = 3000;
     var lastClickTime = 0;
 
-    // ═══════════════════════════════════════════
-    // BOOT — detect mode and start the right flow
-    // ═══════════════════════════════════════════
+   
 
     function boot() {
         console.info('[VoteHub] 🚀 Booting...');
@@ -114,10 +91,6 @@
         }
     }
 
-    // ═══════════════════════════════════════════
-    // DEMO MODE — Works without Firebase
-    // Votes stored in localStorage (per browser/device)
-    // ═══════════════════════════════════════════
 
     function _bootDemoMode() {
         console.info('[VoteHub] Demo mode active.');
@@ -154,8 +127,7 @@
     }
 
     /**
-     * Handle a vote click in demo mode.
-     * VIBECODE SAFELY: rate limit + one-vote-per-device enforcement.
+     * 
      */
     function _handleDemoVote(ideaId) {
         // Rate limit — 3 seconds between any vote click globally
@@ -173,8 +145,6 @@
             return;
         }
 
-        // VIBECODE SAFELY: Validate the ideaId is one of our known ideas
-        // This prevents a rogue call with an arbitrary id injected via console
         var knownIds = WEBSITE_IDEAS.map(function (i) { return i.id; });
         if (knownIds.indexOf(ideaId) === -1) {
             console.warn('[VoteHub] Unknown ideaId rejected:', ideaId);
@@ -211,8 +181,7 @@
     }
 
     /**
-     * Patch VoteHubVoting with demo-mode implementations so ui.js
-     * correctly marks voted buttons without needing Firestore.
+    
      */
     function _patchVotingForDemo(userVoted) {
         VoteHubVoting._demoVoted = userVoted.slice(); // copy
@@ -247,17 +216,13 @@
         catch (e) { /* storage full or blocked */ }
     }
 
-    // ═══════════════════════════════════════════
-    // LIVE MODE — Full Firebase Firestore
-    // ═══════════════════════════════════════════
+    
 
     function _bootLiveMode(fb) {
         console.info('[VoteHub] Live Firebase mode active.');
         VoteHubUI.updateAuthStatus('connecting');
 
-        // ── OPTIMIZATION: Immediate Render ──
-        // Show local ideas immediately so the user doesn't see a long loading state.
-        // These will be replaced by live data once Firestore connects.
+        
         var initialIdeas = WEBSITE_IDEAS.map(function (idea) {
             return {
                 id: _validateId(idea.id),
@@ -270,11 +235,9 @@
             VoteHubUI.showToast('Connecting to live voting...', 'info');
         });
 
-        // Make WEBSITE_IDEAS accessible to the vote result handler
         _bootLiveMode.ideas = WEBSITE_IDEAS;
 
-        // Get device fingerprint for one-vote-per-person enforcement
-        // VIBECODE SAFELY: Fingerprinting is deferred to a microtask to avoid blocking initial render
+    
         var fingerprint = null;
         setTimeout(function() {
             fingerprint = VoteHubFingerprint.getFingerprint();
@@ -328,12 +291,7 @@
         VoteHubVoting.castVote(ideaId, fingerprint);
     }
 
-    // ═══════════════════════════════════════════
-    // LOCAL VALIDATION HELPERS
-    // VIBECODE SAFELY: Validate even our own data before rendering.
-    // "Never Trust Input" applies to hardcoded data too — future-proofing
-    // against accidental typos or malicious edits to this file.
-    // ═══════════════════════════════════════════
+    /
 
     /** Validate a document/element ID — only allow safe characters */
     function _validateId(val) {
