@@ -1,43 +1,10 @@
-/**
- * ============================================
- * VoteHub — Firebase Configuration
- * ============================================
- *
- * IMPORTANT: Firebase web API keys are designed to be public.
- * They identify your Firebase project but do NOT grant access.
- * Security is enforced through:
- *   1. Firestore Security Rules (server-side)
- *   2. Firebase Authentication (user identity)
- *   3. App Check (optional, for production hardening)
- *
- * For production, you should:
- *   - Enable Firebase App Check to prevent abuse
- *   - Restrict API key usage in Google Cloud Console
- *   - Use domain-based restrictions on your API key
- *
- * SETUP INSTRUCTIONS:
- *   1. Go to https://console.firebase.google.com
- *   2. Create a new project (or select existing)
- *   3. Add a Web App to your project
- *   4. Copy the firebaseConfig object below
- *   5. Replace the placeholder values with your actual config
- *   6. Enable Anonymous Authentication in Firebase Console:
- *      → Authentication → Sign-in method → Anonymous → Enable
- *   7. Create a Firestore Database:
- *      → Firestore Database → Create database → Start in test mode
- *      → Then apply the security rules from firestore.rules
- * ============================================
- */
+
 
 // eslint-disable-next-line no-unused-vars
 const VoteHubConfig = (function () {
   'use strict';
 
-  /**
-   * Firebase project configuration for votehub-prod.
-   * These values are safe to be in frontend code — they only identify
-   * your Firebase project. Real security is enforced by Firestore Rules.
-   * See: https://firebase.google.com/docs/projects/api-keys
+  
    */
   const firebaseConfig = {
     apiKey: "AIzaSyCRLLJkg6Y20HQhhFiJ0abQrPdvMc-P_TU",
@@ -50,9 +17,7 @@ const VoteHubConfig = (function () {
   };
 
   /**
-   * Validate that Firebase config has been properly set up.
-   * Returns true if config looks like real values, false if placeholders.
-   * Now that real config is set, this will always return true.
+  
    */
   function isConfigured() {
     return (
@@ -66,9 +31,7 @@ const VoteHubConfig = (function () {
   }
 
   /**
-   * Initialize Firebase app with the config.
-   * Throws a clear error if config hasn't been set up yet.
-   * @returns {{ app: object, auth: object, db: object }}
+   
    */
   function initializeFirebase() {
     // Check if Firebase SDK is loaded
