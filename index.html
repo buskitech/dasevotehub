@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description"
+        content="DASE VoteHub — Cast your vote on the next big DASE idea. Real-time anonymous voting powered by Firebase.">
+    <meta name="theme-color" content="#0a0a14">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./assets/favicon.png">
+    <link rel="apple-touch-icon" href="./assets/favicon.png">
+
+    <title>DASE VoteHub</title>
+
+    <!-- Google Fonts — preloaded for speed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css?v=6">
+</head>
+
+<body>
+
+    <!-- ========================================
+         HEADER / NAVIGATION
+         ======================================== -->
+    <header id="app-header" class="app-header">
+        <div class="container header-inner">
+            <div class="logo" id="logo">
+                <img src="./assets/dase_logo_clean.png" alt="DASE Logo" class="dase-logo">
+                <span class="logo-wordmark">DASE</span>
+            </div>
+            <div class="header-right">
+                <div class="auth-status" id="auth-status" style="display:none;"></div>
+                <div class="theme-switcher" id="theme-switcher" title="Toggle theme"
+                    aria-label="Toggle dark/light mode"></div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- ========================================
+         HERO SECTION
+         ======================================== -->
+    <section id="hero-section" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="hero-badge__dot"></span>
+                Live Voting Open
+            </div>
+            <h1 class="hero-title">
+                Your Voice,<br>Your Future.
+                <span class="hero-gradient-text">Vote with DASE.</span>
+            </h1>
+            <p class="hero-subtitle">
+                DASE is building the next generation of products. Explore each idea below and cast your vote — the most
+                supported concept shapes what we build next.
+            </p>
+            <div class="hero-stats" id="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="total-ideas-count">—</span>
+                    <span class="stat-label">Ideas</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-value" id="total-votes-count">—</span>
+                    <span class="stat-label">Total Votes</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-value" id="active-voters-count">—</span>
+                    <span class="stat-label">Voters</span>
+                </div>
+            </div>
+            <a href="#ideas-section" class="hero-cta">
+                Explore Ideas
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+            </a>
+        </div>
+        <!-- Decorative Elements -->
+        <div class="hero-bg-orb hero-bg-orb--1"></div>
+        <div class="hero-bg-orb hero-bg-orb--2"></div>
+        <div class="hero-bg-orb hero-bg-orb--3"></div>
+        <div class="hero-grid-lines"></div>
+    </section>
+
+    <!-- ========================================
+         NOTIFICATION TOAST
+         ======================================== -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- ========================================
+         IDEAS LIST SECTION
+         ======================================== -->
+    <main id="ideas-section" class="ideas-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Cast Your Vote</div>
+                <h2 class="section-title">Which DASE idea excites you most?</h2>
+                <p class="section-subtitle">One vote per person. Anonymous. Secure. Your voice matters.</p>
+            </div>
+
+            <!-- Loading Skeleton -->
+            <div id="loading-skeleton" class="ideas-grid">
+                <div class="idea-card skeleton">
+                    <div class="skeleton-badge"></div>
+                    <div class="skeleton-title"></div>
+                    <div class="skeleton-desc"></div>
+                    <div class="skeleton-desc short"></div>
+                    <div class="skeleton-footer"></div>
+                </div>
+                <div class="idea-card skeleton">
+                    <div class="skeleton-badge"></div>
+                    <div class="skeleton-title"></div>
+                    <div class="skeleton-desc"></div>
+                    <div class="skeleton-desc short"></div>
+                    <div class="skeleton-footer"></div>
+                </div>
+                <div class="idea-card skeleton">
+                    <div class="skeleton-badge"></div>
+                    <div class="skeleton-title"></div>
+                    <div class="skeleton-desc"></div>
+                    <div class="skeleton-desc short"></div>
+                    <div class="skeleton-footer"></div>
+                </div>
+            </div>
+
+            <!-- Actual Ideas Grid (populated by JS) -->
+            <div id="ideas-grid" class="ideas-grid" style="display:none;"></div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state" style="display:none;">
+                <div class="empty-icon">📭</div>
+                <h3>No Ideas Yet</h3>
+                <p>Ideas will appear here once they're added to the database.</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="error-state" style="display:none;">
+                <div class="error-icon">⚠️</div>
+                <h3>Something Went Wrong</h3>
+                <p id="error-message">Unable to load ideas. Please refresh the page.</p>
+                <button id="retry-btn" class="btn btn-primary" onclick="window.location.reload()">Retry</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========================================
+         FOOTER
+         ======================================== -->
+    <footer id="app-footer" class="app-footer">
+        <div class="container footer-inner">
+            <div class="footer-logo">
+                <img src="./assets/dase_logo_clean.png" alt="DASE" class="footer-logo-img">
+                <span>DASE</span>
+            </div>
+            <p class="footer-text">
+                Empowering decisions. Shaping the future.
+            </p>
+            <p class="footer-disclaimer">
+                🗳️ One vote per idea per person &nbsp;·&nbsp; Your vote is anonymous &nbsp;·&nbsp; Results are live
+            </p>
+        </div>
+    </footer>
+
+    <!-- ========================================
+         VOTE SUCCESS POPUP
+         ======================================== -->
+    <div id="vote-popup-overlay" class="vote-popup-overlay">
+        <div class="vote-popup">
+            <!-- Confetti particles -->
+            <div class="vote-popup__confetti" id="popup-confetti"></div>
+
+            <!-- Animated rings behind icon -->
+            <div class="vote-popup__rings">
+                <div class="vote-popup__ring vote-popup__ring--1"></div>
+                <div class="vote-popup__ring vote-popup__ring--2"></div>
+                <div class="vote-popup__ring vote-popup__ring--3"></div>
+            </div>
+
+            <!-- Checkmark icon -->
+            <div class="vote-popup__icon">
+                <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+                    <circle cx="36" cy="36" r="36" fill="url(#popupGrad2)" />
+                    <circle cx="36" cy="36" r="33" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+                    <path d="M22 37l10 10 18-20" stroke="#fff" stroke-width="4" stroke-linecap="round"
+                        stroke-linejoin="round" class="vote-popup__check" />
+                    <defs>
+                        <linearGradient id="popupGrad2" x1="0" y1="0" x2="72" y2="72">
+                            <stop offset="0%" stop-color="#0056c7" />
+                            <stop offset="50%" stop-color="#007bff" />
+                            <stop offset="100%" stop-color="#00c6ff" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+
+            <!-- Content -->
+            <h3 class="vote-popup__title">Thank You!</h3>
+            <p class="vote-popup__subtitle">Your vote has been recorded</p>
+            <p class="vote-popup__message" id="vote-popup-message"></p>
+
+            <!-- Decorative divider -->
+            <div class="vote-popup__divider"></div>
+
+            <!-- Vote count display -->
+            <div class="vote-popup__counter">
+                <span class="vote-popup__counter-icon">🗳️</span>
+                <span class="vote-popup__counter-text">Every vote shapes what we build next</span>
+            </div>
+
+            <!-- Close button -->
+            <button class="vote-popup__close-btn" id="vote-popup-close">
+                <span>Continue</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Modular via CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="js/config.js?v=8"></script>
+    <script src="js/fingerprint.js?v=8"></script>
+    <script src="js/auth.js?v=8"></script>
+    <script src="js/voting-fingerprint.js?v=8"></script>
+    <script src="js/ui.js?v=8"></script>
+    <script src="js/app.js?v=8"></script>
+</body>
+
+</html>
